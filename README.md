@@ -4,4 +4,4 @@ Mobile App Backend - Node Js
 
 Any push to the main branch automatically trigger the github workflow and depoly the docker image to aws.
 
-Create Clone of backend repo
+Create a Clone of backend repo
