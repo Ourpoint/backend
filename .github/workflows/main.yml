@@ -14,34 +14,28 @@ jobs:
       - name: Docker Hub Login
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASS }}
 
       - name: Docker Hub Push
-        env:
-          DOCKER_HUB_REPO: react-portfolio
         run: |
-          docker build -t $DOCKER_HUB_REPO .
-          docker tag $DOCKER_HUB_REPO:latest ${{ secrets.DOCKER_USER }}/$DOCKER_HUB_REPO:latest
-          docker push ${{ secrets.DOCKER_USER }}/$DOCKER_HUB_REPO
+          docker build -t ${{ secrets.DOCKER_HUB_REPO }} .
+          docker tag ${{ DOCKER_HUB_REPO }}:latest ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}:latest
+          docker push ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
 
       - name: Docker pull & Run In EC2
         uses: appleboy/ssh-action@master
         env:
-          DOCKER_HUB_REPO: react-portfolio
+          DOCKER_IMAGE: backend
+          # image in ec2 instance
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: REPO_DOCKER_HUB
+          envs: DOCKER_IMAGE
           script: |
-            sudo docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull ${{ secrets.DOCKER_USER }}/$DOCKER_HUB_REPO
-            sudo docker stop backend
-            sudo docker rm backend
-            sudo docker run --detach --name backend -p 5000:5000 ${{ secrets.DOCKER_USER }}/$DOCKER_HUB_REPO
-            
-            
-            
-            
-            
+            sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
+            sudo docker pull ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
+            sudo docker stop $DOCKER_IMAGE
+            sudo docker rm $DOCKER_IMAGE
+            sudo docker run --detach --name  $DOCKER_IMAGE-p 5000:5000 ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
