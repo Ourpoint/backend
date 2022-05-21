@@ -20,7 +20,7 @@ jobs:
       - name: Docker Hub Push
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_REPO }} .
-          docker tag ${{ DOCKER_HUB_REPO }}:latest ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}:latest
+          docker tag ${{ secrets.DOCKER_HUB_REPO }}:latest ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}:latest
           docker push ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
 
       - name: Docker pull & Run In EC2
