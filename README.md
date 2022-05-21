@@ -6,4 +6,3 @@ Any push to the main branch automatically trigger the github workflow and depoly
 
 1. Create a Clone of backend repo.
 2. Make some changes and push to main branch.
-   .
