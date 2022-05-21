@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 
 
 app.get("/", (req, res)=>{
-	res.send("Ourpoint Backend.")
+	res.send("Welcome to Ourpoint Backend.")
 })
 
 

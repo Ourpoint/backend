@@ -32,6 +32,6 @@ jobs:
           script: |
             sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
             sudo docker pull ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
-            # sudo docker stop backend
-            # sudo docker rm backend
+            sudo docker stop backend
+            sudo docker rm backend
             sudo docker run --detach --name backend -p 5000:5000 ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
