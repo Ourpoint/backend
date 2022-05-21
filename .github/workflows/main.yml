@@ -36,6 +36,6 @@ jobs:
           script: |
             sudo docker login -u ${{ secrets.DOCKER_HUB_USER }} -p ${{ secrets.DOCKER_HUB_PASS }}
             sudo docker pull ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
-            # sudo docker stop $DOCKER_IMAGE
-            # sudo docker rm $DOCKER_IMAGE
+            sudo docker stop $DOCKER_IMAGE
+            sudo docker rm $DOCKER_IMAGE
             sudo docker run --detach --name  $DOCKER_IMAGE-p 5000:5000 ${{ secrets.DOCKER_HUB_USER }}/${{ secrets.DOCKER_HUB_REPO }}
